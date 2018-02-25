@@ -30,6 +30,7 @@ function checkFiles(){
 
 function update(){
   echo "Updating"
+  rm "$current"
   cat "$subs"|while read sub
   do
     getRecent "$sub"
@@ -52,7 +53,7 @@ function getRecent(){
         #base64 -w 0
 
       echo ""
-    done > "$current" 
+    done|tee -a "$current" 
   }
 
 
