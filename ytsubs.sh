@@ -49,7 +49,8 @@ function getRecent(){
         sed 's/title="/\ntitle="/g;s/href="/\nhref="/g'|\
         grep -e '^title' -e '^href'|\
         cut -d\" -f2|\
-        tr "\n" "|"
+        tr "\n" "|"|\
+        sed 's/\/watch?/https:\/\/www.youtube.com\/watch?/'
         #base64 -w 0
 
       echo ""
