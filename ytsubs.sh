@@ -37,7 +37,7 @@ function checkFiles(){
 function update(){
   echo "Updating"
   rm "$current"
-  cat "$subs"|while read sub
+  cat "$subs"|sort -u|while read sub
   do
     getRecent "$sub"
   done
@@ -58,6 +58,8 @@ function getRecent(){
         grep -e '^title' -e '^href'|\
         cut -d\" -f2|\
         tr "|" ":"|\
+        tr '\' "-"|\
+        tr '/' "-"|\
         tr "\n" "|"|\
         sed 's/\/watch?/https:\/\/www.youtube.com\/watch?/'
         #base64 -w 0
