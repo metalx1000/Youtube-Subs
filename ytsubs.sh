@@ -5,12 +5,15 @@ domain="https://www.youtube.com"
 subs="$ytdir/ytsubs.lst"
 current="$ytdir/current.lst"
 viewed="$ytdir/viewed.lst"
+today="$(date +%s)"
+let maxage=2
 
 function main(){
   checkFiles
   if [ "$func" = "update" ]
   then
     update
+    removeOld
   elif [ "$func" = "upgrade" ]
   then
     upgrade
@@ -42,18 +45,19 @@ function update(){
 
 function getRecent(){
   url="$1"
-  title="$(getChannel "$url")"
+  channel="$(getChannel "$url")"
   echo "Scanning $url"
   wget -qO- "$url"|\
     grep "yt-lockup-title"|\
     head -n 2|\
     while read line;
     do
-      echo -n "$title|" 
+      echo -n "$channel|" 
       echo "$line"|\
         sed 's/title="/\ntitle="/g;s/href="/\nhref="/g'|\
         grep -e '^title' -e '^href'|\
         cut -d\" -f2|\
+        tr "|" ":"|\
         tr "\n" "|"|\
         sed 's/\/watch?/https:\/\/www.youtube.com\/watch?/'
         #base64 -w 0
@@ -70,6 +74,33 @@ function getChannel(){
     sed 's/title=/\ntitle=/g'|\
     grep '^title' |\
     cut -d\" -f2
+}
+
+function removeOld(){
+  cat "$current"|while read line
+  do
+    title="$(echo "$line"|cut -d\| -f2)"
+    url="$(echo "$line"|cut -d\| -f3)"
+    date="$(getPubDate "$url")"
+    date="$(date --date="$date" +%s)"
+    let age="$(echo "($today-$date)/60/60/24"|bc)"
+    if [ $age -gt $maxage ]
+    then
+      echo "Removing $title"
+      sed -i "/$title/d" "$current"
+    fi
+
+  done
+}
+
+function getPubDate(){
+  url="$1"
+  wget -qO- "$url"|\
+    grep 'watch-time-text'|\
+    sed 's/Published on /\nPublished on /g'|\
+    grep '^Published on '|\
+    cut -d\< -f1|\
+    sed 's/Published on //g'
 }
 
 function upgrade(){
