@@ -11,6 +11,9 @@ function main(){
   if [ "$func" = "update" ]
   then
     update
+  elif [ "$func" = "upgrade" ]
+  then
+    upgrade
   fi
 
 }
@@ -39,12 +42,14 @@ function update(){
 
 function getRecent(){
   url="$1"
+  title="$(getChannel "$url")"
   echo "Scanning $url"
   wget -qO- "$url"|\
     grep "yt-lockup-title"|\
     head -n 2|\
     while read line;
-    do 
+    do
+      echo -n "$title|" 
       echo "$line"|\
         sed 's/title="/\ntitle="/g;s/href="/\nhref="/g'|\
         grep -e '^title' -e '^href'|\
@@ -57,5 +62,19 @@ function getRecent(){
     done|tee -a "$current" 
   }
 
+
+function getChannel(){
+  url="$1"
+  wget -qO- "$url"|\
+    grep "channel-title"|\
+    sed 's/title=/\ntitle=/g'|\
+    grep '^title' |\
+    cut -d\" -f2
+}
+
+function upgrade(){
+  echo "Downloading Newest Version..."
+  wget "https://raw.githubusercontent.com/metalx1000/Youtube-Subs/master/ytsubs.sh" -O "$0"
+}
 
 main
