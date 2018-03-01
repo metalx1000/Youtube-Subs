@@ -6,7 +6,7 @@ subs="$ytdir/ytsubs.lst"
 current="$ytdir/current.lst"
 viewed="$ytdir/viewed.lst"
 today="$(date +%s)"
-let maxage=2
+let maxage=1
 
 function main(){
   checkFiles
@@ -60,8 +60,6 @@ function getRecent(){
         grep -e '^title' -e '^href'|\
         cut -d\" -f2|\
         tr "|" ":"|\
-        tr '\' "-"|\
-        tr '/' "-"|\
         tr "\n" "|"|\
         sed 's/\/watch?/https:\/\/www.youtube.com\/watch?/'
         #base64 -w 0
