@@ -18,16 +18,16 @@ function main(){
   then
     upgrade
   else
-    output| sed -n "1,22p";read -p "Press Enter to Continue..."
-    output| sed -n "20,42p";read -p "Press Enter to Continue..."
-    output| sed -n "40,62p";read -p "Press Enter to Continue..."
-    output| sed -n "60,82p";read -p "Press Enter to Continue..."
-    output| sed -n "80,102p";read -p "Press Enter to Continue..."
-    output| sed -n "100,122p";read -p "Press Enter to Continue..."
-    output| sed -n "120,142p";read -p "Press Enter to Continue..."
-    output| sed -n "140,162p";read -p "Press Enter to Continue..."
-    output| sed -n "160,162p";read -p "Press Enter to Continue..."
-    output| sed -n "180,202p";read -p "Press Enter to Continue..."
+    let x=1;
+    let y=10;
+    let l="$(output|wc -l)"
+    while [ $x -lt $l ]
+    do
+      output| sed -n "${x},${y}p";
+      read -p "Press Enter to Continue..."
+      let x+=10;
+      let y+=10;
+    done
   fi
 
 }
@@ -130,7 +130,9 @@ function output(){
       link="$(echo "$vid"|cut -d\| -f2)"
       echo -e "\e[1m$title\e[0m"
       echo "$link"
+      
     done
+
   done
 }
 
