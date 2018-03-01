@@ -30,6 +30,9 @@ function main(){
        echo ""
        echo "Good-Bye..."
        exit 0
+     elif [ "$c" = "m" ]
+     then
+       tmux-url-select.pl
      fi 
       printf '\r'
       let x+=10;
