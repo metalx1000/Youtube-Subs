@@ -24,7 +24,14 @@ function main(){
     while [ $x -lt $l ]
     do
       output| sed -n "${x},${y}p";
-      read -p "Press Enter to Continue..."
+      read -rsn1 -p "Press Enter to Continue..." c
+     if [ "$c" = "q" ]
+     then
+       echo ""
+       echo "Good-Bye..."
+       exit 0
+     fi 
+      printf '\r'
       let x+=10;
       let y+=10;
     done
