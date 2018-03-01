@@ -17,6 +17,8 @@ function main(){
   elif [ "$func" = "upgrade" ]
   then
     upgrade
+  else
+    output
   fi
 
 }
@@ -108,6 +110,21 @@ function getPubDate(){
 function upgrade(){
   echo "Downloading Newest Version..."
   wget "https://raw.githubusercontent.com/metalx1000/Youtube-Subs/master/ytsubs.sh" -O "$0"
+}
+
+function output(){
+  cut -d\| -f1 "$current"|sort -u|while read line
+  do
+    echo ""
+    echo -e "\e[7m$line\e[0m"
+    grep "^$line" "$current"|cut -d\| -f2,3|while read vid
+    do
+      title="$(echo "$vid"|cut -d\| -f1)"
+      link="$(echo "$vid"|cut -d\| -f2)"
+      echo -e "\e[1m$title\e[0m"
+      echo "$link"
+    done
+  done
 }
 
 main
