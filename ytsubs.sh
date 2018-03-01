@@ -18,7 +18,16 @@ function main(){
   then
     upgrade
   else
-    output
+    output| sed -n "1,22p";read -p "Press Enter to Continue..."
+    output| sed -n "20,42p";read -p "Press Enter to Continue..."
+    output| sed -n "40,62p";read -p "Press Enter to Continue..."
+    output| sed -n "60,82p";read -p "Press Enter to Continue..."
+    output| sed -n "80,102p";read -p "Press Enter to Continue..."
+    output| sed -n "100,122p";read -p "Press Enter to Continue..."
+    output| sed -n "120,142p";read -p "Press Enter to Continue..."
+    output| sed -n "140,162p";read -p "Press Enter to Continue..."
+    output| sed -n "160,162p";read -p "Press Enter to Continue..."
+    output| sed -n "180,202p";read -p "Press Enter to Continue..."
   fi
 
 }
