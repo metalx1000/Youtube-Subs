@@ -6,6 +6,7 @@ subs="$ytdir/ytsubs.lst"
 current="$ytdir/current.lst"
 viewed="$ytdir/viewed.lst"
 today="$(date +%s)"
+pager=20 #number of lines moved when paging through output
 let maxage=1
 
 function main(){
@@ -19,11 +20,15 @@ function main(){
     upgrade
   else
     let x=1;
-    let y=10;
+    let y=$pager;
     let l="$(output|wc -l)"
     while [ $x -lt $l ]
     do
-      output| sed -n "${x},${y}p";
+      output| sed -n "${x},${y}p"|while read line
+      do
+        echo "$line"
+        sleep .05;
+      done
       read -rsn1 -p "Press Enter to Continue..." c
      if [ "$c" = "q" ]
      then
@@ -35,8 +40,8 @@ function main(){
        tmux-url-select.pl
      fi 
       printf '\r'
-      let x+=10;
-      let y+=10;
+      let x+=$pager;
+      let y+=$pager;
     done
   fi
 
