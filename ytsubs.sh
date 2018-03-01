@@ -131,7 +131,7 @@ function getPubDate(){
 
 function upgrade(){
   echo "Downloading Newest Version..."
-  wget "https://raw.githubusercontent.com/metalx1000/Youtube-Subs/master/ytsubs.sh" -O "$0"
+  wget "https://raw.githubusercontent.com/metalx1000/Youtube-Subs/master/ytsubs.sh" -O "$0";exit
 }
 
 function output(){
