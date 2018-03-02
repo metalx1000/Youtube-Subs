@@ -72,7 +72,7 @@ function checkFiles(){
 
 function update(){
   echo "Updating"
-  rm "$current"
+  #rm "$current"
   cat "$subs"|sort -u|while read sub
   do
     getRecent "$sub"
@@ -166,6 +166,8 @@ function clean(){
   echo "===========Clean Up=============="
   awk  -F\| 'BEGIN {OFS="|"} {gsub(/\//,"-",$2); print}' "$current"|sponge "$current"
   awk  -F\| 'BEGIN {OFS="|"} {gsub(/&quot;/,"\"",$2); print}' "$current"|sponge "$current"
+  awk  -F\| 'BEGIN {OFS="|"} {gsub(/&#39;/,"`",$2); print}' "$current"|sponge "$current"
+  awk  -F\| 'BEGIN {OFS="|"} {gsub(/*/,"=",$2); print}' "$current"|sponge "$current"
 }
 
 function list(){
