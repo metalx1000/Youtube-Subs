@@ -77,6 +77,7 @@ function update(){
   do
     getRecent "$sub"
   done
+  cp "$tmp" "$current"
 }
 
 function getRecent(){
@@ -100,7 +101,6 @@ function getRecent(){
 
       echo ""
     done|tee -a "$tmp"
-    cp "$tmp" "$current"
   }
 
 
