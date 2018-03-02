@@ -10,6 +10,8 @@ today="$(date +%s)"
 pager=20 #number of lines moved when paging through output
 let maxage=1
 
+rm "$tmp"
+
 function main(){
   checkFiles
   if [ "$func" = "update" ]
@@ -92,7 +94,7 @@ function getRecent(){
 
       echo ""
     done|tee -a "$tmp"
-    mv "$tmp" "$current"
+    cp "$tmp" "$current"
   }
 
 
@@ -155,7 +157,9 @@ function output(){
 }
 
 function clean(){
-  awk  -F\| 'BEGIN {OFS="|"} {gsub(/\//,"-",$2); print}' "$current"|sponge -a "$current"
+  awk  -F\| 'BEGIN {OFS="|"} {gsub(/\//,"-",$2); print}' "$current"
+  awk  -F\| 'BEGIN {OFS="|"} {gsub(/\//,"-",$2); print}' "$current"|sponge "$current"
+#  awk  -F\| 'BEGIN {OFS="|"} {gsub(/&quot;/,"\'",$2); print}' "$current"|sponge -a "$current"
 }
 
 main
