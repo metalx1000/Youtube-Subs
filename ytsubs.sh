@@ -14,6 +14,7 @@ function main(){
   if [ "$func" = "update" ]
   then
     update
+    clean
     removeOld
   elif [ "$func" = "upgrade" ]
   then
@@ -135,11 +136,11 @@ function upgrade(){
 }
 
 function output(){
-  cut -d\| -f1 "$current"|sort -u|while read line
+  cut -d\| -f1 "$current"|sort -u|sed '/^$/d'|while read line
   do
     echo ""
     echo -e "\e[7m$line\e[0m"
-    grep "^$line" "$current"|cut -d\| -f2,3|while read vid
+    grep "^$line" "$current"|grep 'https'|cut -d\| -f2,3|while read vid
     do
       title="$(echo "$vid"|cut -d\| -f1)"
       link="$(echo "$vid"|cut -d\| -f2)"
@@ -149,6 +150,10 @@ function output(){
     done
 
   done
+}
+
+function clean(){
+  awk  -F\| 'BEGIN {OFS="|"} {gsub(/\//,"-",$2); print}' "$current"|sponge -a "$current"
 }
 
 main
