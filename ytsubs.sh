@@ -22,6 +22,12 @@ function main(){
   elif [ "$func" = "upgrade" ]
   then
     upgrade
+  elif [ "$func" = "list" ]
+  then
+    list
+  elif [ "$func" = "help" ]
+  then
+    help
   else
     let x=1;
     let y=$pager;
@@ -157,9 +163,22 @@ function output(){
 }
 
 function clean(){
-  awk  -F\| 'BEGIN {OFS="|"} {gsub(/\//,"-",$2); print}' "$current"
+  echo "===========Clean Up=============="
   awk  -F\| 'BEGIN {OFS="|"} {gsub(/\//,"-",$2); print}' "$current"|sponge "$current"
-#  awk  -F\| 'BEGIN {OFS="|"} {gsub(/&quot;/,"\'",$2); print}' "$current"|sponge -a "$current"
+  awk  -F\| 'BEGIN {OFS="|"} {gsub(/&quot;/,"\"",$2); print}' "$current"|sponge "$current"
+}
+
+function list(){
+  $EDITOR "$subs"
+}
+
+function help(){
+  echo "Usage: $0 option"
+  echo "===Options=="
+  echo "help"
+  echo "update - Update Current Video List"
+  echo "upgrade - Upgrade $0 to Newest Version"
+  echo "list - Edit Sub list"
 }
 
 main
