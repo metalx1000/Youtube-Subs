@@ -4,6 +4,7 @@ ytdir="$HOME/.ytsubs"
 domain="https://www.youtube.com"
 subs="$ytdir/ytsubs.lst"
 current="$ytdir/current.lst"
+tmp="/tmp/yt.tmp"
 viewed="$ytdir/viewed.lst"
 today="$(date +%s)"
 pager=20 #number of lines moved when paging through output
@@ -90,7 +91,8 @@ function getRecent(){
         #base64 -w 0
 
       echo ""
-    done|tee -a "$current" 
+    done|tee -a "$tmp"
+    mv "$tmp" "$current"
   }
 
 
