@@ -144,7 +144,7 @@ function output(){
       title="$(echo "$vid"|cut -d\| -f1)"
       link="$(echo "$vid"|cut -d\| -f2)"
       echo -e "\e[1m$title\e[0m"
-      echo "$link"
+      echo -e "\e[94m$link\e[0m"
       
     done
 
